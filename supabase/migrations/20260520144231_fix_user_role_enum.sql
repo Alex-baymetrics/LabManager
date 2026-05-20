@@ -1,0 +1,1 @@
+ALTER TYPE labmanager.user_role RENAME VALUE 'usuário' TO 'usuario';
