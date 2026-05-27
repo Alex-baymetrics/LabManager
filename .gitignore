@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+
+# Environment / secrets
+.env
+.env.*
+
+# Editor
+.vscode/
+
+# Supabase
+supabase/.branches/
+supabase/.temp/

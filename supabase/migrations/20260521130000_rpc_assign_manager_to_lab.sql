@@ -20,6 +20,7 @@ BEGIN
   SET fk_user_manager_id = p_user_id
   WHERE id = p_lab_id
   RETURNING row_to_json(laboratory.*) INTO result;
+  
 
   IF result IS NULL THEN
     RAISE EXCEPTION 'Laboratorio nao encontrado.';

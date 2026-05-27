@@ -1,0 +1,225 @@
+{
+  "info": {
+    "name": "LabManager",
+    "description": "Coleção de endpoints do LabManager - Supabase Edge Functions",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:54321/functions/v1"
+    },
+    {
+      "key": "anon_key",
+      "value": "sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{anon_key}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data?.token) {",
+                  "  pm.collectionVariables.set('token', res.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": ["{{base_url}}"],
+              "path": ["login"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"joao@email.com\",\n  \"password\": \"123456\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Criar Usuário",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/create-user",
+              "host": ["{{base_url}}"],
+              "path": ["create-user"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"João Silva\",\n  \"email\": \"joao@email.com\",\n  \"password\": \"123456\",\n  \"user_type\": \"admin\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Laboratórios",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{token}}",
+            "type": "string"
+          }
+        ]
+      },
+      "item": [
+        {
+          "name": "Listar Labs Ativos (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/create-lab",
+              "host": ["{{base_url}}"],
+              "path": ["create-lab"]
+            }
+          }
+        },
+        {
+          "name": "Criar Laboratório (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/create-lab",
+              "host": ["{{base_url}}"],
+              "path": ["create-lab"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Lab de Informática\",\n  \"opening_time\": \"08:00\",\n  \"closure_time\": \"18:00\",\n  \"cep\": \"01001-000\",\n  \"number\": \"100\",\n  \"max_capacity\": 30,\n  \"status\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Inativar Laboratório - Soft Delete (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/create-lab",
+              "host": ["{{base_url}}"],
+              "path": ["create-lab"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "Vincular Responsável ao Lab (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/create-lab",
+              "host": ["{{base_url}}"],
+              "path": ["create-lab"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lab_id\": 1,\n  \"user_id\": 1\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Matrícula / Vínculo",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{token}}",
+            "type": "string"
+          }
+        ]
+      },
+      "item": [
+        {
+          "name": "Check-in - Vincular aluno ao Lab (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/enrrol-lab",
+              "host": ["{{base_url}}"],
+              "path": ["enrrol-lab"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lab_id\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "Check-out - Desvincular aluno do Lab (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/enrrol-lab",
+              "host": ["{{base_url}}"],
+              "path": ["enrrol-lab"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lab_id\": 1\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
