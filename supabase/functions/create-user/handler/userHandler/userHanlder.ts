@@ -1,7 +1,8 @@
-import { createUser, type SupabaseCreateUserClient } from "../../domain/create-user.ts";
+import { createUser } from "../../domain/create-user.ts";
 import { createSupabaseAdminClient } from "../../../_shared/supabaseClient.ts";
 
 export async function userHandler(req: Request): Promise<Response> {
-  const supabase = createSupabaseAdminClient() as unknown as SupabaseCreateUserClient;
+  const supabase = createSupabaseAdminClient();
   return createUser(req, supabase);
+  
 }
